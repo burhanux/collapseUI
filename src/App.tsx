@@ -52,7 +52,12 @@ const CollapseUI = (props: ICollapseUI) => {
   }, [refBtn])
 
   return (<>
-    <button ref={refBtn} type="button" className="collapsible" style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", }}><span>{props.TAB_TITLE}</span> <span><strong>{modeSymbol ? "-" : "+"}</strong></span></button>
+    <button ref={refBtn} type="button" className="collapsible"
+      style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold" }}><span>{props.TAB_TITLE}</span>
+      <span style={{ transform: modeSymbol ? "rotate(90deg)" : 'inherit' }}><strong>
+        &#10095;
+      </strong></span>
+    </button>
     <div ref={refContent} className="content">
       {SampleData.map((data: { name: string, url: string, timestamp: string }, index: number) => <CollapseUIEl key={index} name={data.name} url={data.url} date={data.timestamp} RGBABorder={TAB_COLOR} RGBAContainer={EL_BG_COLOR} />)}
     </div>
