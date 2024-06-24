@@ -23,7 +23,8 @@ interface ICollapseUI {
 }
 
 const CollapseUI = (props: ICollapseUI) => {
-  const [modeSymbol, setModeSymbol] = useState<boolean>(false)
+  const [isActive, setIsActive] = useState<boolean>(false)
+  const [mouseHover, setMouseHover] = useState<boolean>(false)
   const refBtn = useRef()
   const refContent = useRef()
   const TAB_COLOR = "rgba(51, 170, 51, 0.8)";
@@ -44,7 +45,7 @@ const CollapseUI = (props: ICollapseUI) => {
       } else if (this.classList.contains("active")) {
         content.style.maxHeight = content.scrollHeight + "px";
       }
-      setModeSymbol(prev => !prev)
+      setIsActive(prev => !prev)
       e.stopPropagation();
       e.preventDefault();
     }
@@ -53,8 +54,11 @@ const CollapseUI = (props: ICollapseUI) => {
 
   return (<>
     <button ref={refBtn} type="button" className="collapsible"
-      style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold" }}><span>{props.TAB_TITLE}</span>
-      <span style={{ transform: modeSymbol ? "rotate(90deg)" : 'inherit' }}><strong>
+      onMouseEnter={() => setMouseHover(true)}
+      onMouseLeave={() => setMouseHover(false)}
+      style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", backgroundColor: isActive ? TAB_COLOR : (mouseHover ? TAB_COLOR : EL_BG_COLOR) }}>
+      <span>{props.TAB_TITLE}</span>
+      <span style={{ transform: isActive ? "rotate(90deg)" : 'inherit' }}><strong>
         &#10095;
       </strong></span>
     </button>
@@ -77,10 +81,13 @@ const CollapseUIEl = (props: ICollapseUIEl) => {
   const bgColor = props.RGBAContainer ? props.RGBAContainer : "inherit";
   const ElColor = { borderColor: borderColor, backgroundColor: bgColor }
   return (
-    <div style={{ display: "flex", padding: "0.5rem", justifyContent: "space-between", border: "2px solid", borderRadius: "5px", marginTop: "0.5rem", ...ElColor }}>
-      <div>{props.name}</div>
-      <div>{props.date}</div>
-      <div>{props.url}</div>
+    <div style={{ fontFamily: "sans-serif", display: "flex", padding: "0.5rem", justifyContent: "space-between", border: "2px solid", borderRadius: "5px", marginTop: "0.5rem", ...ElColor }}>
+      <div>
+        <div>{props.name}</div>
+        <div>{props.date}</div>
+      </div>
+
+      <div><a style={{ textDecoration: "none" }} href={props.url} target='_blank'>&#10140;</a></div>
     </div>
   )
 }
